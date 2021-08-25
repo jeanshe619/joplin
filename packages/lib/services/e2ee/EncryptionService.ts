@@ -211,7 +211,7 @@ export default class EncryptionService {
 		return MasterKey.allWithoutEncryptionMethod(masterKeys, this.defaultMasterKeyEncryptionMethod_);
 	}
 
-	public async reencryptMasterKey(model: MasterKeyEntity, decryptionPassword: string, decryptOptions: EncryptOptions = null, encryptOptions: EncryptOptions = null) {
+	public async reencryptMasterKey(model: MasterKeyEntity, decryptionPassword: string, decryptOptions: EncryptOptions = null, encryptOptions: EncryptOptions = null): Promise<MasterKeyEntity> {
 		const newEncryptionMethod = this.defaultMasterKeyEncryptionMethod_;
 		const plainText = await this.decryptMasterKeyContent(model, decryptionPassword, decryptOptions);
 		const newContent = await this.encryptMasterKeyContent_(newEncryptionMethod, plainText, decryptionPassword, encryptOptions);
