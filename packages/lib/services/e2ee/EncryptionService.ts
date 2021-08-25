@@ -208,7 +208,7 @@ export default class EncryptionService {
 	}
 
 	masterKeysThatNeedUpgrading(masterKeys: MasterKeyEntity[]) {
-		return MasterKey.allWithoutEncryptionMethod(masterKeys, this.defaultMasterKeyEncryptionMethod_);
+		return MasterKey.allWithoutEncryptionMethod(masterKeys, [this.defaultMasterKeyEncryptionMethod_, EncryptionMethod.Custom]);
 	}
 
 	public async reencryptMasterKey(model: MasterKeyEntity, decryptionPassword: string, decryptOptions: EncryptOptions = null, encryptOptions: EncryptOptions = null): Promise<MasterKeyEntity> {
@@ -219,7 +219,7 @@ export default class EncryptionService {
 	}
 
 	private async encryptMasterKeyContent_(encryptionMethod: EncryptionMethod, hexaBytes: string, password: string, options: EncryptOptions): Promise<MasterKeyEntity> {
-		if (encryptionMethod === EncryptionMethod.Custom) {
+		if (options.encryptionHandler) {
 			return {
 				checksum: '',
 				encryption_method: EncryptionMethod.Custom,
